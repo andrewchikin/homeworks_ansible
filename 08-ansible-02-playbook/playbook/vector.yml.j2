@@ -1,7 +1,13 @@
-{{ vector_general_config | default("") }}
+# vector_config.j2
 sources:
-  {{ sources | to_nice_yaml | indent(2) }}
-transforms:
-  {{ transforms | to_nice_yaml | indent(2) }}
+  in:
+    type: "stdin"
+
 sinks:
-  {{ sinks | to_nice_yaml | indent(2) }}
+  out:
+    inputs:
+      - "in"
+    type: "console"
+    encoding:
+      codec: "text"
+

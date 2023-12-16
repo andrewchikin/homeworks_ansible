@@ -6,3 +6,7 @@ clickhouse_packages:
   - clickhouse-common-static
 
 vector_version: "0.34.0-1.x86_64"
+vector_template: "/Users/r2d2/Documents/homeworks-ansible/homeworks_ansible/08-ansible-02-playbook/playbook/vector.yml.j2"
+vector_config_file: "/vector_config.toml"
+
+

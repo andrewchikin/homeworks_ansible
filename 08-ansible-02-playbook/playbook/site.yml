@@ -1,14 +1,15 @@
 ---
 - name: Install Clickhouse
   hosts: vm
-  handlers:
-    - name: Start clickhouse service
-      become: true
-      ansible.builtin.service:
-        name: clickhouse-server
-        state: restarted
   tasks:
+    - name: Get clickhouse distrib from two url # name[missing]: All tasks should be named. Task/Handler: block/always/rescue 
     - block:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.noarch.rpm"
+            dest: "./{{ item }}-{{ clickhouse_version }}.rpm"
+          with_items: "{{ clickhouse_packages }}"
+      rescue:
         - name: Get clickhouse distrib
           ansible.builtin.get_url:
             url: "https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm"
@@ -26,11 +27,18 @@
     - name: Create database
       ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
       register: create_db
-      failed_when: create_db.rc != 0 and create_db.rc !=82
+      failed_when: create_db.rc != 0 and create_db.rc != 82
       changed_when: create_db.rc == 0
-
+  handlers:
+    - name: Start clickhouse service
+      become: true
+      ansible.builtin.service:
+        name: clickhouse-server
+        state: restarted
 - name: Install vector
   hosts: vm
+  become: yes
+  # gather_facts: false
   handlers:
   - name: Start vector service
     become: true
@@ -42,7 +50,7 @@
       ansible.builtin.get_url:
         url: "https://yum.vector.dev/stable/vector-0/x86_64/vector-{{ vector_version }}.rpm"
         dest: "./vector-{{ vector_version }}.rpm"
-    - name: install rpm
+    - name: Install vector rpm
       become: true
       ansible.builtin.yum:
         name: vector-{{ vector_version }}.rpm
@@ -52,44 +60,9 @@
         dest: "{{ vector_config_file }}"
         mode: 0644
       notify: restart vector
-    - name: Add vector user to systemd-journal group
-      user:
-        name: vector
-        groups: systemd-journal
-        append: yes
-      when: add_vector_journal_group | default(no)
-      notify: restart vector
-
     - name: Start Vector
       service:
         state: started
         enabled: yes
-        name: vector      
-
-    # - name: Configure service vector
-    #   become: true
-    #   ansible.builtin.template:    
-    #     src: vector.service.j2
-    #     dest: /etc/systemd/system/vector.service
-    #     mode: "0644"
-    #     owner: "{{ ansible_user_id }}"
-    #     group: "{{ ansible_user_id }}"
-    #     validate: vector validate --no-environment --config-yaml %s
-    # - name: create systemd unit  
-    #   become: true
-    #   ansible.builtin.template:
-    #     src: vector.yml.j2
-    #     dest: /etc/systemd/system/vector.service
-    #     mode: "0644"
-    #     owner: "{{ ansible_user_id }}"
-    #     group: "{{ ansible_user_id }}"    
-    #     notify: Start vector service
-    # - name: Flush handlers # Force all notified handlers to run at this point, not waiting for normal sync points
-    #   meta: flush_handlers
-
-    - name: Start vector service
-      become: true
-      ansible.builtin.service:
-        name: vector
-        state: restarted
+        name: vector     
         
