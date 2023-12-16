@@ -2,7 +2,6 @@
 - name: Install Clickhouse
   hosts: vm
   tasks:
-    - name: Get clickhouse distrib from two url # name[missing]: All tasks should be named. Task/Handler: block/always/rescue 
     - block:
         - name: Get clickhouse distrib
           ansible.builtin.get_url:
