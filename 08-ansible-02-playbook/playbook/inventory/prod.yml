@@ -2,8 +2,9 @@
 vm:
   hosts:
     server1:
-      ansible_host: 158.160.127.224 
+      ansible_host: 158.160.118.75
       ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      
 
 # clickhouse:
 #   hosts:
