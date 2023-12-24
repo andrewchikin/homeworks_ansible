@@ -11,13 +11,36 @@
 
 1. Подготовьте свой inventory-файл `prod.yml`.
 2. Допишите playbook: нужно сделать ещё один play, который устанавливает и настраивает [vector](https://vector.dev). Конфигурация vector должна деплоиться через template файл jinja2. От вас не требуется использовать все возможности шаблонизатора, просто вставьте стандартный конфиг в template файл. Информация по шаблонам по [ссылке](https://www.dmosk.ru/instruktions.php?object=ansible-nginx-install).
+### Ответ
+Дописал плэй с вектором, с конфигурацие повозился)
+
 3. При создании tasks рекомендую использовать модули: `get_url`, `template`, `unarchive`, `file`.
+### Ответ
+`unarchive`, `file` - не применял эти модули так как скачивал не архивом, а модуль file не знаю как применить.
+
 4. Tasks должны: скачать дистрибутив нужной версии, выполнить распаковку в выбранную директорию, установить vector.
+
+### Ответ
+Скачиваю дистрибутив с "https://yum.vector.dev/stable/vector-0/x86_64/vector-{{ vector_version }}.rpm" версию положил в переменную vector_version: "0.34.0-1.x86_64" качается в dest: "./vector-{{ vector_version }}.rpm"
 5. Запустите `ansible-lint site.yml` и исправьте ошибки, если они есть.
+Запустил ошибки исправил, осталась одна не могу понять как ее исправить
+name[missing]: All tasks should be named.
+site.yml:5 Task/Handler: block/always/rescue 
 6. Попробуйте запустить playbook на этом окружении с флагом `--check`.
+
 7. Запустите playbook на `prod.yml` окружении с флагом `--diff`. Убедитесь, что изменения на системе произведены.
 8. Повторно запустите playbook с флагом `--diff` и убедитесь, что playbook идемпотентен.
 9. Подготовьте README.md-файл по своему playbook. В нём должно быть описано: что делает playbook, какие у него есть параметры и теги. Пример качественной документации ansible playbook по [ссылке](https://github.com/opensearch-project/ansible-playbook).
+
+Плейбук позволяет установить clickhouse и vector на ВМ.
+Таски использует следующие модули:
+ansible.builtin.get_url - для получения дистрибутива ;ansible.builtin.yum - для установки пакетов на сentos;
+ansible.builtin.meta - для запуска обработчика  flush_handlers, запуска всех тасок handlers для которых были notify;
+ansible.builtin.command - передаем команды для сервисов;
+ansible.builtin.template - для преобразования файла конфигурации;
+ansible.builtin.service - для старта сервисов;
+
+
 10. Готовый playbook выложите в свой репозиторий, поставьте тег `08-ansible-02-playbook` на фиксирующий коммит, в ответ предоставьте ссылку на него.
 
 ---
@@ -27,3 +50,6 @@
 Выполненное домашнее задание пришлите в виде ссылки на .md-файл в вашем репозитории.
 
 ---
+
+
+
