@@ -32,8 +32,8 @@
 ### Ответ
 
 Запустил ошибки исправил, осталась одна не могу понять как ее исправить
-name[missing]: All tasks should be named.
-site.yml:5 Task/Handler: block/always/rescue 
+`name[missing]: All tasks should be named.
+site.yml:5 Task/Handler: block/always/rescue`
 
 6. Попробуйте запустить playbook на этом окружении с флагом `--check`.
 7. Запустите playbook на `prod.yml` окружении с флагом `--diff`. Убедитесь, что изменения на системе произведены.
