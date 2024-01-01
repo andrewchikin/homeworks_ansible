@@ -67,19 +67,24 @@ site.yml:5 Task/Handler: block/always/rescue`
 ---
 
 ### Конфигурация
-В файле /playbook/inventory/prod.yml указанна группа хостов (один) накотором следует запускать play, кроме того указывается ssh ключ для подключения.
+В файле `/playbook/inventory/prod.yml` указанна группа хостов (один) накотором следует запускать play, кроме того указывается ssh ключ для подключения.
 
-В файле /playbook/group_vars/vm/vars.yml указываются переменные.
+В файле `/playbook/group_vars/vm/vars.yml` указываются переменные.
 версия ПО: 
-    - clickhouse_version 
-    - vector_version
+
+    - clickhouse_version;
+
+    - vector_version.
 
 части названия пакетов ПО:
-clickhouse_packages
+
+`clickhouse_packages`
 
 Расположение conf файлов:
-vector_template - на машине с которой запускается play
-vector_config_file -  на машине на которой разворачивается ПО
+
+`vector_template` - на машине с которой запускается play
+
+`vector_config_file` -  на машине на которой разворачивается ПО
 
 ### Запуск
 ansible-playbook -i inventory/prod.yml site.yml
