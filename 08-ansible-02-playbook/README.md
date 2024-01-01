@@ -52,15 +52,17 @@ site.yml:5 Task/Handler: block/always/rescue
 Плейбук позволяет установить clickhouse и vector на ВМ.
 Таски использует следующие модули:
 
-ansible.builtin.get_url - для получения дистрибутива ;ansible.builtin.yum - для установки пакетов на сentos;
+`ansible.builtin.get_url` - для получения дистрибутива ;
 
-ansible.builtin.meta - для запуска обработчика  flush_handlers, запуска всех тасок handlers для которых были notify;
+`ansible.builtin.yum` - для установки пакетов на сentos;
 
-ansible.builtin.command - передаем команды для сервисов;
+`ansible.builtin.meta` - для запуска обработчика  flush_handlers, запуска всех тасок handlers для которых были notify;
 
-ansible.builtin.template - для преобразования файла конфигурации;
+`ansible.builtin.command` - передаем команды для сервисов;
 
-ansible.builtin.service - для старта сервисов;
+`ansible.builtin.template` - для преобразования файла конфигурации;
+
+`ansible.builtin.service` - для старта сервисов;
 
 ---
 
