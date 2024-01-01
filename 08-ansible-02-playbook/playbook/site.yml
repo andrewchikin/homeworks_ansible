@@ -68,5 +68,3 @@
         state: started
         enabled: true
         name: vector
-        state: restarted
-        
