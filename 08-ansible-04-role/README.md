@@ -18,16 +18,17 @@
 
 1. Создайте в старой версии playbook файл `requirements.yml` и заполните его содержимым:
 
-   ```yaml
-   ---
-     - src: git@github.com:AlexeySetevoi/ansible-clickhouse.git
-       scm: git
-       version: "1.13"
-       name: clickhouse 
-   ```
+[requirements.yml](requirements.yml)
 
 2. При помощи `ansible-galaxy` скачайте себе эту роль.
+```shell
+ansible-galaxy role install -p roles -r requirements.yml```
+
 3. Создайте новый каталог с ролью при помощи `ansible-galaxy role init vector-role`.
+
+`ansible-galaxy role init vector-role`  
+`ansible-galaxy role init lighthouse-role` 
+
 4. На основе tasks из старого playbook заполните новую role. Разнесите переменные между `vars` и `default`. 
 5. Перенести нужные шаблоны конфигов в `templates`.
 6. Опишите в `README.md` обе роли и их параметры. Пример качественной документации ansible role [по ссылке](https://github.com/cloudalchemy/ansible-prometheus).
